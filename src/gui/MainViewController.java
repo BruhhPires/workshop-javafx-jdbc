@@ -43,7 +43,7 @@ public class MainViewController implements Initializable{
 	}
 
 	@Override
-	public void initialize(URL uri, ResourceBundle rb) {
+	public void initialize(URL url, ResourceBundle rb) {
 	}
 	
 	private synchronized void loadView (String absoluteName) {   //METODO QUE CARREGA A TELA "syncronized" GARANTE QUE ESTE PROCESSAMENTO NÃO VAI SER INTERROMPIDO DURANTE O MULTITREADH
