@@ -1,6 +1,7 @@
 package gui;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -39,6 +40,15 @@ public class SellerListController implements Initializable, DataChangeListener {
 
 	@FXML
 	private TableColumn<Seller, String> tableColumName; // COLUNA 2
+	
+	@FXML
+	private TableColumn<Seller, String> tableColumnEmail; 
+	
+	@FXML
+	private TableColumn<Seller, Date> tableColumnBirhDate; 
+	
+	@FXML
+	private TableColumn<Seller, Double> tableColumBaseSalary; 
 
 	@FXML
 	private TableColumn<Seller, Seller> tableColumnEDIT;
@@ -67,12 +77,17 @@ public class SellerListController implements Initializable, DataChangeListener {
 		initializeNodes();
 	}
 
-	private void initializeNodes() { // INICIA O COMPORTAMENTO DAS COLUNAS
+	private void initializeNodes() {											 // INICIA O COMPORTAMENTO DAS COLUNAS
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColumName.setCellValueFactory(new PropertyValueFactory<>("name"));
-
-		Stage stage = (Stage) Main.getMainScene().getWindow(); // PEGA UMA REFERENCIA PRO STAGE DO GETWINDOWN E FAZ O
-																// DOWNCAST
+		tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+		tableColumnBirhDate.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
+		Utils.formatTableColumnDate(tableColumnBirhDate, "dd/MM/yyyy");            // FORMATO DA DATA
+		tableColumBaseSalary.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
+		Utils.formatTableColumnDouble(tableColumBaseSalary, 2);                    // DIGITOS DO VLAOR
+		
+		Stage stage = (Stage) Main.getMainScene().getWindow(); 					 // PEGA UMA REFERENCIA PRO STAGE DO GETWINDOWN E FAZ O DOWNCAST
+																						
 		tableViewSeller.prefHeightProperty().bind(stage.heightProperty()); // GARANTE QUE O TABLEVIEW ACOMPANHE A
 																				// JANELA
 	}
