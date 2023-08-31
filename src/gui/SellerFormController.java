@@ -1,8 +1,11 @@
 package gui;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -16,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Seller;
@@ -30,6 +34,7 @@ public class SellerFormController implements Initializable{
 	
 	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 	
+	// ATRIBUTOS SELLER
 	@FXML
 	private TextField txtId;
 	
@@ -37,7 +42,26 @@ public class SellerFormController implements Initializable{
 	private TextField txtName;
 	
 	@FXML
+	private TextField txtEmail;
+	
+	@FXML
+	private DatePicker dpBirthDate;
+	
+	@FXML
+	private TextField txtBaseSalary;
+	
+	// LABELS DE ERRO
+	@FXML
 	private Label labelErroName;
+	
+	@FXML
+	private Label labelErroEmail;
+	
+	@FXML
+	private Label labelErroBirthDate;
+	
+	@FXML
+	private Label labelErroBaseSalary;
 	
 	@FXML
 	private Button btSave;
@@ -115,15 +139,25 @@ public class SellerFormController implements Initializable{
 
 	private void initializeNodes() {
 		gui.util.Constraints.setTextFieldInteger(txtId);
-		gui.util.Constraints.setTextFieldMaxLength(txtName, 30);
+		gui.util.Constraints.setTextFieldMaxLength(txtName, 70);
+		gui.util.Constraints.setTextFieldDouble(txtBaseSalary);
+		gui.util.Constraints.setTextFieldMaxLength(txtEmail, 60);
+		Utils.formatDatePicker(dpBirthDate, "dd/MM/yyyy");
+
 	}
 	
-	public void updateFormData() { // METODO DE ATUALIZAR DADOS
+	public void updateFormData() {                              // METODO DE ATUALIZAR DADOS
 		if (entity == null) {
 			throw new IllegalStateException("Entity was null");
 		}
-		txtId.setText(String.valueOf(entity.getId())); // PEGA O NUMERO QUE É INTEIRO E TRANSFORMA EM STRING 
-		txtName.setText(entity.getName()); 			   //
+		txtId.setText(String.valueOf(entity.getId()));          // PEGA O NUMERO QUE É INTEIRO E TRANSFORMA EM STRING 
+		txtName.setText(entity.getName()); 	
+		txtEmail.setText(entity.getEmail());
+		Locale.setDefault(Locale.US);
+		txtBaseSalary.setText(String.format("%.2f", entity.getBaseSalary()));
+		if (entity.getBirthDate() != null) {
+			dpBirthDate.setValue(LocalDate.ofInstant(entity.getBirthDate().toInstant(), ZoneId.systemDefault()));  // ATRIBUI AO DPBIRTH DATE O VALOR USANDO LOCAL DATE  APLICANDO O TO INSTANTE COM O HORARIO DO PC
+		}
 	}
 	
 	private void setErrorMessaqges (Map<String, String> errors) {
